@@ -12,3 +12,6 @@
 hs_err_pid*
 .idea/*
 *.iml
+target/*
+Будет удалено target/
+Будет удалено .idea/
