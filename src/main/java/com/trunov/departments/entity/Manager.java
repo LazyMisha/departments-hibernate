@@ -6,14 +6,7 @@ import javax.persistence.*;
  * Created by misha on 12.03.17.
  */
 @javax.persistence.Entity
-@Table(name = "managers", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "id"),
-        @UniqueConstraint(columnNames = "name"),
-        @UniqueConstraint(columnNames = "lastName"),
-        @UniqueConstraint(columnNames = "age"),
-        @UniqueConstraint(columnNames = "type"),
-        @UniqueConstraint(columnNames = "methodology"),
-        @UniqueConstraint(columnNames = "department_id")})
+@Table(name = "managers")
 public class Manager extends Employee {
 
     @Column(name = "methodology", nullable = false, length = 25)
@@ -28,11 +21,26 @@ public class Manager extends Employee {
 
     }
 
+    public Manager(long id){
+        this.id = id;
+    }
+
     public String getMethodology() {
         return methodology;
     }
 
     public void setMethodology(String methodology) {
         this.methodology = methodology;
+    }
+
+    @Override
+    public String toString(){
+        return "id: " + id +
+                ", Name: " + name +
+                ", Last Name: " + getLastName() +
+                ", Age: " + getAge() +
+                ", Type: " + getType() +
+                ", Methodology: " + methodology +
+                ", Department: " + getDepartment().name;
     }
 }
