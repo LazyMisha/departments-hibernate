@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class DevelopersDao {
 
+    //todo: make these private
     SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     Session session = sessionFactory.openSession();
     Criteria criteria = session.createCriteria(Developer.class);

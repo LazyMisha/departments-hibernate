@@ -23,6 +23,7 @@ class DepartmentApplication {
     //private static final Logger log = Logger.getLogger(DepartmentApplication.class);
 
     private String str;
+    //todo: List<String> list = new ArrayList<>();
     private ArrayList<String> list = new ArrayList<>();
 
     void run(){

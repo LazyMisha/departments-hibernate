@@ -14,16 +14,13 @@ import java.util.List;
  * Created by misha on 12.03.17.
  */
 public class DepartmentsDao {
-
-    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    Session session = sessionFactory.openSession();
-    Criteria criteria = session.createCriteria(Department.class);
+    private Session session = HibernateUtil.getSessionFactory().openSession();
 
     public List<Department> getAll(){
         List<Department> departments = new ArrayList<>();
         try {
             session.beginTransaction();
-            departments = criteria.list();
+            departments = session.createCriteria(Department.class).list();
             session.getTransaction().commit();
         }catch (Exception e) {
             session.getTransaction().rollback();
@@ -36,8 +33,9 @@ public class DepartmentsDao {
         Department department = null;
         try{
             session.beginTransaction();
-            criteria.add(Restrictions.eq("name", name));
-            department = (Department) criteria.uniqueResult();
+            department = (Department) session.createCriteria(Department.class)
+                    .add(Restrictions.eq("name", name))
+                    .uniqueResult();
             session.getTransaction().commit();
         }catch (Exception e){
             session.getTransaction().rollback();
