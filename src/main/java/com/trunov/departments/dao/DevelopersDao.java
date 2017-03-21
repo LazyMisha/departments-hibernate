@@ -2,10 +2,8 @@ package com.trunov.departments.dao;
 
 import com.trunov.departments.entity.Developer;
 import com.trunov.departments.util.HibernateUtil;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +13,17 @@ import java.util.List;
  */
 public class DevelopersDao {
 
-    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    Session session = sessionFactory.openSession();
-    Criteria criteria = session.createCriteria(Developer.class);
-    DepartmentsDao departmentsDao = new DepartmentsDao();
+    private Session session = HibernateUtil.getSessionFactory().openSession();
+
+    private DepartmentsDao departmentsDao = new DepartmentsDao();
 
     public Developer getById(long id){
         Object developer = null;
         try {
             session.beginTransaction();
-            developer = criteria.add(Restrictions.eq("id", id)).uniqueResult();
+            developer = session.createCriteria(Developer.class)
+                    .add(Restrictions.eq("id", id))
+                    .uniqueResult();
             session.getTransaction().commit();
         }catch (Exception e){
             session.getTransaction().rollback();
@@ -50,7 +49,9 @@ public class DevelopersDao {
         List<Developer> developers = new ArrayList<>();
         try{
             session.beginTransaction();
-            developers = criteria.add(Restrictions.eq("department.id", departmentsDao.getIdByName(departmentName))).list();
+            developers = session.createCriteria(Developer.class)
+                    .add(Restrictions.eq("department.id", departmentsDao.getIdByName(departmentName)))
+                    .list();
             session.getTransaction().commit();
         }catch (Exception e){
             session.getTransaction().rollback();
@@ -70,7 +71,7 @@ public class DevelopersDao {
         }
     }
 
-    public void removeById(Developer developer){
+    public void remove(Developer developer){
         try {
             session.beginTransaction();
             session.load(developer, developer.getId());
@@ -82,7 +83,7 @@ public class DevelopersDao {
         }
     }
 
-    public void updateById(Developer developer){
+    public void update(Developer developer){
         try{
             session.beginTransaction();
             session.update(developer);
@@ -97,8 +98,12 @@ public class DevelopersDao {
         List<Developer> developers = null;
         try {
             session.beginTransaction();
-            criteria.add(Restrictions.eq("age", developerAge)).list();
-            developers = criteria.add(Restrictions.eq("department.id", departmentId)).list();
+            session.createCriteria(Developer.class)
+                    .add(Restrictions.eq("age", developerAge))
+                    .list();
+            developers = session.createCriteria(Developer.class)
+                    .add(Restrictions.eq("department.id", departmentId))
+                    .list();
             session.getTransaction().commit();
         }catch (Exception e) {
             session.getTransaction().rollback();

@@ -23,7 +23,7 @@ class DepartmentApplication {
     //private static final Logger log = Logger.getLogger(DepartmentApplication.class);
 
     private String str;
-    private ArrayList<String> list = new ArrayList<>();
+    private List<String> list = new ArrayList<>();
 
     void run(){
         System.out.println("please type help for view list of all COMMANDS!");
@@ -151,21 +151,21 @@ class DepartmentApplication {
                         }else if (list.contains("-d")) {
                             Department department = new Department(Long.parseLong(list.get(2)));
                             DepartmentsDao departmentsDao1 = new DepartmentsDao();
-                            departmentsDao1.removeById(department);
+                            departmentsDao1.remove(department);
                             list.clear();
                             break;
                             // remove developer
                         } else if (list.contains("-dv")) {
                             Developer developer = new Developer(Long.parseLong(list.get(2)));
                             DevelopersDao developersDao = new DevelopersDao();
-                            developersDao.removeById(developer);
+                            developersDao.remove(developer);
                             list.clear();
                             break;
                             // remove manager
                         } else if (list.contains("-mn")) {
                             Manager manager = new Manager(Long.parseLong(list.get(2)));
                             ManagersDao managersDao = new ManagersDao();
-                            managersDao.removeById(manager);
+                            managersDao.remove(manager);
                             list.clear();
                             break;
                         }
@@ -194,7 +194,7 @@ class DepartmentApplication {
                                 developer.setAge(Integer.parseInt(list.get(10)));
                                 developer.setLanguage(list.get(14));
                                 developer.setDepartment(new Department(Long.parseLong(list.get(12))));
-                                developersDao.updateById(developer);
+                                developersDao.update(developer);
                                 list.clear();
                                 break;
                             }
@@ -214,7 +214,7 @@ class DepartmentApplication {
                                 manager.setAge(Integer.parseInt(list.get(10)));
                                 manager.setMethodology(list.get(14));
                                 manager.setDepartment(new Department(Long.parseLong(list.get(12))));
-                                managersDao.updateById(manager);
+                                managersDao.update(manager);
                                 list.clear();
                                 break;
                             }

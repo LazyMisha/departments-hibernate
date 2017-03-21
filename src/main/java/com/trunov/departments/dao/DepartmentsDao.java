@@ -2,11 +2,8 @@ package com.trunov.departments.dao;
 
 import com.trunov.departments.entity.Department;
 import com.trunov.departments.util.HibernateUtil;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +12,13 @@ import java.util.List;
  */
 public class DepartmentsDao {
 
-    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    Session session = sessionFactory.openSession();
-    Criteria criteria = session.createCriteria(Department.class);
+    private Session session = HibernateUtil.getSessionFactory().openSession();
 
     public List<Department> getAll(){
         List<Department> departments = new ArrayList<>();
         try {
             session.beginTransaction();
-            departments = criteria.list();
+            departments = session.createCriteria(Department.class).list();
             session.getTransaction().commit();
         }catch (Exception e) {
             session.getTransaction().rollback();
@@ -36,8 +31,9 @@ public class DepartmentsDao {
         Department department = null;
         try{
             session.beginTransaction();
-            criteria.add(Restrictions.eq("name", name));
-            department = (Department) criteria.uniqueResult();
+            department = (Department) session.createCriteria(Department.class)
+                    .add(Restrictions.eq("name", name))
+                    .uniqueResult();
             session.getTransaction().commit();
         }catch (Exception e){
             session.getTransaction().rollback();
@@ -57,7 +53,7 @@ public class DepartmentsDao {
         }
     }
 
-    public void removeById(Department department) {
+    public void remove(Department department) {
         try {
             session.beginTransaction();
             session.load(department, department.getId());
